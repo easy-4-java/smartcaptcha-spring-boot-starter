@@ -90,7 +90,7 @@ Add the dependency above to your `pom.xml`.
 ### 6.2 Configure
 
 ```yaml
-smartcaptcha:
+smart-captcha:
   enabled: true
 ```
 
@@ -122,7 +122,7 @@ private Object bean;
 
 | Property | Type | Default | Required | Description | Sensitive |
 |---|---|---|:---:|---|:---:|
-| `smartcaptcha.enabled` | boolean | `true` | No | Enable the starter | No |
+| `smart-captcha.enabled` | boolean | `true` | No | Enable the starter | No |
 <!-- additional properties below -->
 
 ## 8. Version Lines and Compatibility
@@ -144,7 +144,7 @@ mvn -pl smartcaptcha-spring-boot-starter -am test
 
 | Symptom | Diagnosis | Resolution |
 |---|---|---|
-| Bean not created | Check auto-configuration report | Verify `smartcaptcha.enabled=true` and classpath |
+| Bean not created | Check auto-configuration report | Verify `smart-captcha.enabled=true` and classpath |
 | `ClassNotFoundException` | Missing dependency | Add the required module |
 | Version conflict | `mvn dependency:tree` | Use BOM for version alignment |
 

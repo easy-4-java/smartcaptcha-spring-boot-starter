@@ -43,17 +43,42 @@ class SmartCaptchaAutoConfigurationTest {
     }
 
     @Test
-    @DisplayName("Auto-configuration loads when 'spring.boot.enabled=true'")
+    @DisplayName("Auto-configuration loads when 'smart-captcha.enabled=true'")
     void testLoadsWhenEnabledPropertySet() {
         runner.withUserConfiguration(SmartCaptchaAutoConfiguration.class)
-                .withPropertyValues("spring.boot.enabled=true")
+                .withPropertyValues(
+                        "smart-captcha.enabled=true",
+                        "smart-captcha.image-pattern=/verify.jpg",
+                        "smart-captcha.refresh-pattern=/refresh",
+                        "smart-captcha.audio-pattern=/verify.wav",
+                        "smart-captcha.audio-path=/tmp/captcha-audio",
+                        "smart-captcha.width=320",
+                        "smart-captcha.height=64")
+                .run(context -> {
+                    assertThat(context).hasSingleBean(SmartCaptchaAutoConfiguration.class);
+                    SmartCaptchaProperties properties = context.getBean(SmartCaptchaProperties.class);
+                    assertThat(properties.isEnabled()).isTrue();
+                    assertThat(properties.getImagePattern()).isEqualTo("/verify.jpg");
+                    assertThat(properties.getRefreshPattern()).isEqualTo("/refresh");
+                    assertThat(properties.getAudioPattern()).isEqualTo("/verify.wav");
+                    assertThat(properties.getAudioPath()).isEqualTo("/tmp/captcha-audio");
+                    assertThat(properties.getWidth()).isEqualTo(320);
+                    assertThat(properties.getHeight()).isEqualTo(64);
+                });
+    }
+
+    @Test
+    @DisplayName("Auto-configuration loads by default")
+    void testLoadedWhenPropertyAbsent() {
+        runner.withUserConfiguration(SmartCaptchaAutoConfiguration.class)
                 .run(context -> assertThat(context).hasSingleBean(SmartCaptchaAutoConfiguration.class));
     }
 
     @Test
-    @DisplayName("Auto-configuration is absent when property is not set")
-    void testNotLoadedWhenPropertyAbsent() {
+    @DisplayName("Auto-configuration is absent when 'smart-captcha.enabled=false'")
+    void testNotLoadedWhenDisabled() {
         runner.withUserConfiguration(SmartCaptchaAutoConfiguration.class)
+                .withPropertyValues("smart-captcha.enabled=false")
                 .run(context -> assertThat(context).doesNotHaveBean(SmartCaptchaAutoConfiguration.class));
     }
 }

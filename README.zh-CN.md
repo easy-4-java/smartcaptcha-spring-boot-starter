@@ -90,7 +90,7 @@ Starter 自动装配以下 Bean：
 ### 6.2 配置
 
 ```yaml
-smartcaptcha:
+smart-captcha:
   enabled: true
 ```
 
@@ -122,7 +122,7 @@ private Object bean;
 
 | 属性 | 类型 | 默认值 | 必填 | 说明 | 敏感 |
 |---|---|---|:---:|---|:---:|
-| `smartcaptcha.enabled` | boolean | `true` | 否 | 是否启用 Starter | 否 |
+| `smart-captcha.enabled` | boolean | `true` | 否 | 是否启用 Starter | 否 |
 <!-- 更多属性见下方 -->
 
 ## 8. 版本线与兼容性
@@ -144,7 +144,7 @@ mvn -pl smartcaptcha-spring-boot-starter -am test
 
 | 症状 | 诊断 | 解决 |
 |---|---|---|
-| Bean 未创建 | 查看自动装配报告 | 确认 `smartcaptcha.enabled=true` 与 classpath |
+| Bean 未创建 | 查看自动装配报告 | 确认 `smart-captcha.enabled=true` 与 classpath |
 | `ClassNotFoundException` | 缺少依赖 | 引入对应模块 |
 | 版本冲突 | `mvn dependency:tree` | 使用 BOM 统一版本 |
 

@@ -7,6 +7,9 @@ public class SmartCaptchaProperties {
 
 	public static final String PREFIX = "smart-captcha";
 
+	/** 是否启用验证码自动装配。 */
+	private boolean enabled = true;
+
 	/** 图片验证码访问路径 **/
 	private String imagePattern = "/captcha.jpg";
 	/** 图片验证码刷新路径 **/
@@ -17,6 +20,14 @@ public class SmartCaptchaProperties {
 	private String audioPath;
 	private int width = 200;
 	private int height = 50;
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 
 	public String getImagePattern() {
 		return imagePattern;
