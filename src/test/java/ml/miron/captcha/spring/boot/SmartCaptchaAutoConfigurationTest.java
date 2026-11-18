@@ -51,9 +51,36 @@ class SmartCaptchaAutoConfigurationTest {
     }
 
     @Test
-    @DisplayName("Auto-configuration is absent when property is not set")
-    void testNotLoadedWhenPropertyAbsent() {
+    @DisplayName("Auto-configuration registers captcha endpoints with default settings")
+    void testLoadsWithDefaults() {
         runner.withUserConfiguration(SmartCaptchaAutoConfiguration.class)
-                .run(context -> assertThat(context).doesNotHaveBean(SmartCaptchaAutoConfiguration.class));
+                .run(context -> {
+                    assertThat(context).hasSingleBean(SmartCaptchaAutoConfiguration.class);
+                    assertThat(context).hasBean("imageCaptchaServlet");
+                    assertThat(context).hasBean("audioCaptchaServlet");
+                    assertThat(context).hasBean("refreshCaptchaFilter");
+                });
+    }
+
+    @Test
+    @DisplayName("Custom endpoint paths and dimensions bind from configuration")
+    void testCustomSettingsBind() {
+        runner.withUserConfiguration(SmartCaptchaAutoConfiguration.class)
+                .withPropertyValues(
+                        "smart-captcha.image-pattern=/image.jpg",
+                        "smart-captcha.refresh-pattern=/refresh",
+                        "smart-captcha.audio-pattern=/audio.wav",
+                        "smart-captcha.audio-path=/voice",
+                        "smart-captcha.width=180",
+                        "smart-captcha.height=60")
+                .run(context -> {
+                    SmartCaptchaProperties properties = context.getBean(SmartCaptchaProperties.class);
+                    assertThat(properties.getImagePattern()).isEqualTo("/image.jpg");
+                    assertThat(properties.getRefreshPattern()).isEqualTo("/refresh");
+                    assertThat(properties.getAudioPattern()).isEqualTo("/audio.wav");
+                    assertThat(properties.getAudioPath()).isEqualTo("/voice");
+                    assertThat(properties.getWidth()).isEqualTo(180);
+                    assertThat(properties.getHeight()).isEqualTo(60);
+                });
     }
 }
